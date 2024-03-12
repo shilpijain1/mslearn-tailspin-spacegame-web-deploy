@@ -64,3 +64,30 @@ stages:
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
+
+
+- stage: 'Deploy'
+  displayName: 'deploy app'
+  dependsOn: Build
+  jobs:
+    - deployment: Deploy
+      pool:
+        vmimage: 'ubuntu-20.04'              
+      variables:
+      - group: Release
+      environment: DEV
+      strategy:
+       runOnce:
+         deploy:
+           steps:
+             - download: current
+               artifact: drop
+             - task: AzureWebApp@1
+               displayName: 'deploy to website'
+               inputs:
+                 azureSubscription: 'DevOps_HandsOn_Subscription(c364ab9b-5feb-43ea-92ae-0b1ee74f13df)'
+                 appType: 'webAppLinux'
+                 appName: '$(WebAppName)'
+                 package: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration)/*.zip'
+  
+      
