@@ -85,9 +85,9 @@ stages:
              - task: AzureWebApp@1
                displayName: 'deploy to website'
                inputs:
-                 azureSubscription: 'DevOps_HandsOn_Subscription(c364ab9b-5feb-43ea-92ae-0b1ee74f13df)'
-                 appType: 'webAppLinux'
-                 appName: '$(WebAppName)'
-                 package: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration)/*.zip'
+                azureSubscription: 'DevOps_HandsOn_Subscription(c364ab9b-5feb-43ea-92ae-0b1ee74f13df)'
+                appName: '$(WebAppName)'
+                package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+
   
       
